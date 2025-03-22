@@ -5,11 +5,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 import { Env } from 'src/env'
 import { z } from 'zod'
 
-const tokenSchema = z.object({
+const tokenPayloadschema = z.object({
   sub: z.string().uuid(),
 })
 
-type TokenShcema = z.infer<typeof tokenSchema>
+export type UserPayload = z.infer<typeof tokenPayloadschema>
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  async validate(payload: TokenShcema) {
-    return tokenSchema.parse(payload)
+  async validate(payload: UserPayload) {
+    return tokenPayloadschema.parse(payload)
   }
 }
